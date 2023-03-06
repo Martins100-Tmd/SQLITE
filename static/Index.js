@@ -1,6 +1,9 @@
+//Dom naming
 const FORM = document.getElementById("form");
 const BTN = document.getElementById("btn");
 const USER_CONTAINER = document.getElementById("user");
+
+//Global custom fetch method
 const Fetch = (url, method, body) => {
   let action;
   if (method === "POST") {
@@ -28,6 +31,8 @@ const Fetch = (url, method, body) => {
   }
   return action;
 };
+
+//Update Database on blur
 const Update = (e) => {
   let [props, value] = [
     e.target.innerHTML.split(": ")[0],
@@ -44,25 +49,26 @@ const Update = (e) => {
       .catch((err) => console.log(err));
   }
 };
+
+//Post user info to Database on button click
 BTN.onclick = (e) => {
   e.preventDefault();
   let form = new FormData(FORM);
 
   form = Object.fromEntries([...form.entries()]);
-  console.log(form);
   Fetch("http://localhost:8080/api/post", "POST", form)
     .then((res) => res.json())
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
 };
 
-Fetch("http://localhost:8080/api/post", "GET")
+//Fetch database globally and appenc to the dom
+Fetch("http://localhost:8080/api/get", "GET")
   .then((res) => res.json())
   .then((data) => {
     console.log(data);
     let all = data.data;
     for (let i = 0; i < all.length; i++) {
-      console.log(all[i]);
       const div = document.createElement("div");
       div.className =
         "flex flex-col items-start rounded p-3 shadow gap-3 bg-gradient-to-r from-cyan-200 to-blue-200 w-full";
